@@ -1,5 +1,6 @@
 let deck = []
 let suits = ['\u2660', '\u2661', '\u2662', '\u2663'] // 4 suits
+let faceCards = { 11: 'J', 12: 'Q', 13: 'K', 14: 'A' }
 let handRanks = {
     'High Card': 1,
     'One Pair': 2,
@@ -16,18 +17,9 @@ let handRanks = {
 // creating deck of cards
 for (let suit of suits) {
     for (let i = 2; i <= 14; i++) {
-        // cards 2-10
-        if (i <= 10) {
-            deck.push(i + suit)
-
-        // facecards + Ace
-        } else {
-            let faceCards = { 11: 'J', 12: 'Q', 13: 'K', 14: 'A' }
-            deck.push(faceCards[i] + suit)
-        }
+        deck.push(i + suit)
     }
 }
-
 // draw 5 card hands for 4 players
 function dealHands() {
     let hands = []
@@ -77,22 +69,26 @@ function resolveHand(hand) {
         values[value] ? values[value] += 1 : values[value] = 1
         suits[suit] ? suits[suit] += 1 : suits[suit] = 1
     }
+    console.log(values, suits)
 }
 
+console.log('full deck:', deck, deck.length)
 let hands = dealHands()
-console.log(hands)
-console.log(deck)
+console.log('starting hands:', hands)
+console.log('deck after hands delt:', deck, deck.length)
 for (let i = 0; i < hands.length; i++) {
     hands[i] = discard(hands[i], [1, 3])
 }
-console.log(hands)
-console.log(deck)
+console.log('hands after discard:', hands)
+// console.log(deck)
 for (let hand of hands) {
     draw(hand)
 }
-console.log(hands)
-console.log(deck)
+console.log('hands after draw:', hands)
+console.log('deck after draw', deck, deck.length)
 // for (let hand of hands) {
 //     resolveHand(hand)
 // }
-resolveHand(hands[0])
+for (let hand of hands) {
+    resolveHand(hand)
+}
