@@ -56,22 +56,39 @@ const discard = (hand, discardIndexes) => {
     return remainingHand
 }
 
-const determineWinner = (stateOfGame) => {
-    // let hands = stateOfGame.playerHands
-    console.log(stateOfGame.playerHands)
-    let madeHands = stateOfGame.playerHands.map(hand => resolve.getMadeHandAndRank(hand))
-    console.log(madeHands)
-    
+export const resolveRankBuckets = (stateOfGame) => {
+    let madeHands = stateOfGame.playerHands.map((hand, idx) => [resolve.getMadeHandAndRank(hand), idx])
+        .sort(sortHandRanks)
 
+    let finalRankBuckets = [[]]
+    let last = finalRankBuckets.length - 1
+    madeHands.forEach((hand, idx) => idx === 0 ? finalRankBuckets[last].push(hand[1]) : isRankSame(hand[0], madeHands[idx - 1][0]) ? finalRankBuckets[last].push(hand[1]) : finalRankBuckets.push([hand[1]]))
 
+    return finalRankBuckets
 }
-let state = initGame()
-console.log(state.deck)
-dealHands(state)
-for (let hand of state.playerHands) {
-    // console.log(hand)
-    hand = discard(hand, [1, 3])
-    draw(hand, state.deck)
+
+export const determineWinner = (finalRankBuckets) => {
+
+    return finalRankBuckets[0].length === 1 ? `Winner Player ${finalRankBuckets[0][0]}` : `Tie between Players ${finalRankBuckets[0].join(', ')}`
 }
-determineWinner(state)
-// console.log(state, state.playerHands[0], state.deck.length)
+const isRankSame = (rank1, rank2) => {
+    return rank1.every((ele, idx) => ele === rank2[idx])
+}
+
+const sortHandRanks = ((hand1, hand2) => {
+    let i = 0
+    while (hand1[0][i] === hand2[0][i] && i < hand1[0].length) {
+        i++
+    }
+    return hand2[0][i] - hand1[0][i]
+})
+// let state = initGame()
+// console.log(state.deck)
+// dealHands(state)
+// for (let hand of state.playerHands) {
+//     // console.log(hand)
+//     hand = discard(hand, [1, 3])
+//     draw(hand, state.deck)
+// }
+// determineWinner(state)
+// // console.log(state, state.playerHands[0], state.deck.length)

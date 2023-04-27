@@ -69,7 +69,7 @@ export const getMadeHandAndRank = (hand) => {
         let handName = handRanks[i]
         let result = evalFunctions[handName](hand)
         if (result) {
-            return [handName, [i + 1].concat(result)]
+            return [i, ...result]
         }
     }
 }
