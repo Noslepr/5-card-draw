@@ -9,7 +9,7 @@ const initGame = () => {
     for (let suit in suits) {
         for (let rank = 2; rank <= 14; rank++) {
             let hex = rankToHex(rank)
-            deck.push({ suit: suits[suit], rank, card: String.fromCodePoint(parseInt(`1F0${suit}` + hex, 16)) })
+            deck.push({ suit: suits[suit], rank, display: String.fromCodePoint(parseInt(`1F0${suit}` + hex, 16)) })
         }
     }
 
@@ -55,12 +55,88 @@ const discard = (hand, discardIndexes) => {
     return remainingHand
 }
 
+const determineWinner = (stateOfGame) => {
+    let hands = stateOfGame.playerHands
 
+    
+}
+
+// other file
+const handRanks = [
+    'High Card',
+    'One Pair',
+    'Two Pair',
+    'Three of a Kind',
+    'Straight',
+    'Flush',
+    'Full House',
+    'Four of a Kind',
+    'Straight Flush',
+    'Royal Flush',
+]
+
+const isFlush = (hand) => {
+    let suit = hand[0].suit
+    return hand.every(card => card.suit === suit)
+}
+
+const isStraight = (hand) => {
+    hand.sort((a, b) => b.rank - a.rank)
+
+    return hand[0].rank - hand[hand.length - 1].rank === 4
+}
+
+const getHighRankOfStraight = (straight) => {
+    straight.sort((a, b) => b - a)
+    return straight[0].rank
+}
+
+const groupMatches = (hand) => {
+    let matches = {}
+    for (let card of hand) {
+        matches[card.rank] ? matches[card.rank].push(card) : matches[card.rank] = [card]
+    }
+    return matches
+}
+
+const getMatchesPattern = (hand, pattern) => {
+    let matches = groupMatches(hand)
+    let handPattern = []
+    for (let val in matches) {
+        handPattern.push(matches[val].length)
+    }
+    handPattern.sort((a, b) => b - a)
+
+    return handPattern.every((num, idx) => num === pattern[idx])
+}
+
+const evalFunctions = {
+    'Royal Flush': (hand) => isStraight(hand) && isFlush(hand) && getHighRankOfStraight(hand) === 14,
+    'Straight Flush': (hand) => isStraight(hand) && isFlush(hand),
+    'Four of a Kind': (hand) => getMatchesPattern(hand, [4, 1]),
+    'Full House': (hand) => getMatchesPattern(hand, [3, 2]),
+    'Flush': (hand) => isFlush(hand),
+    'Straight': (hand) => isStraight(hand),
+    'Three of a Kind': (hand) => getMatchesPattern(hand, [3, 1, 1]),
+    'Two Pair': (hand) => getMatchesPattern(hand, [2, 2, 1]),
+    'One Pair': (hand) => getMatchesPattern(hand, [2, 1, 1, 1]),
+    'High Card': (hand) => getMatchesPattern(hand, [1, 1, 1, 1, 1]),
+}
+
+const getMadeHandAndRank = (hand) => {
+    for (let i = handRanks.length - 1; i >= 0; i--) {
+        let handName = handRanks[i]
+        if (evalFunctions[handName](hand)) {
+            return [handName, i + 1]
+        }
+    }
+}
 let state = initGame()
+console.log(state.deck)
 dealHands(state)
 for (let hand of state.playerHands) {
-    console.log(hand)
+    // console.log(hand)
     hand = discard(hand, [1, 3])
     draw(hand, state.deck)
 }
-console.log(state, state.playerHands[0], state.deck.length)
+// console.log(state, state.playerHands[0], state.deck.length)
