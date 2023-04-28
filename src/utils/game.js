@@ -1,11 +1,11 @@
 // const suits = ['\u2660', '\u2661', '\u2662', '\u2663']
 import * as resolve from './resolve.mjs'
 export const suits = { 'A': '\u2660', 'B': '\u2661', 'C': '\u2662', 'D': '\u2663' }
+export const players = 4
 const handSize = 5
-const players = 4
 
 // initialize game with a full deck and number of players
-const initGame = () => {
+export const initGame = () => {
     let deck = []
     for (let suit in suits) {
         for (let rank = 2; rank <= 14; rank++) {
@@ -44,14 +44,14 @@ const draw = (hand, deck) => {
     return hand
 }
 
-const dealHands = (stateOfGame) => {
+export const dealHands = (stateOfGame) => {
     for (let hand of stateOfGame.playerHands) {
         draw(hand, stateOfGame.deck)
     }
     return stateOfGame
 }
 
-const discard = (hand, discardIndexes) => {
+export const discard = (hand, discardIndexes) => {
     let remainingHand = hand.filter((card, idx) => !discardIndexes.includes(idx))
     return remainingHand
 }

@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.hand {
+    display: flex;
+}
+
+.currentHand {
+    display: flex;
+}
