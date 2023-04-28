@@ -30,7 +30,7 @@ export const rankToHex = rank => {
 
 
 // takes in a hand and draws up to max hand size
-const draw = (hand, deck) => {
+export const draw = (hand, deck) => {
     let cardsToDraw = handSize - hand.length
 
     while (cardsToDraw > 0) {
@@ -67,7 +67,8 @@ export const resolveRankBuckets = (stateOfGame) => {
     return finalRankBuckets
 }
 
-export const determineWinner = (finalRankBuckets) => {
+export const determineWinner = (stateOfGame) => {
+    let finalRankBuckets = resolveRankBuckets(stateOfGame)
 
     return finalRankBuckets[0].length === 1 ? `Winner Player ${finalRankBuckets[0][0]}` : `Tie between Players ${finalRankBuckets[0].join(', ')}`
 }
