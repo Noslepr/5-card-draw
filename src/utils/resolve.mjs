@@ -1,5 +1,5 @@
 
-const handRanks = [
+export const handRanks = [
     'High Card',
     'One Pair',
     'Two Pair',

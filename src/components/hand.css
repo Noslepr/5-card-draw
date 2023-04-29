@@ -4,7 +4,11 @@
     /* font-weight: 300; */
 }
 
-.highlight {
+.selected {
     border: 3px solid yellow;
 
+}
+
+.red {
+    color: darkred;
 }

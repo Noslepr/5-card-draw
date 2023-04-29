@@ -69,8 +69,9 @@ export const resolveRankBuckets = (stateOfGame) => {
 
 export const determineWinner = (stateOfGame) => {
     let finalRankBuckets = resolveRankBuckets(stateOfGame)
+    // let winningHand =
 
-    return finalRankBuckets[0].length === 1 ? `Winner Player ${finalRankBuckets[0][0]}` : `Tie between Players ${finalRankBuckets[0].join(', ')}`
+    return finalRankBuckets[0]
 }
 const isRankSame = (rank1, rank2) => {
     return rank1.every((ele, idx) => ele === rank2[idx])
@@ -83,13 +84,3 @@ const sortHandRanks = ((hand1, hand2) => {
     }
     return hand2[0][i] - hand1[0][i]
 })
-// let state = initGame()
-// console.log(state.deck)
-// dealHands(state)
-// for (let hand of state.playerHands) {
-//     // console.log(hand)
-//     hand = discard(hand, [1, 3])
-//     draw(hand, state.deck)
-// }
-// determineWinner(state)
-// // console.log(state, state.playerHands[0], state.deck.length)

@@ -1,21 +1,34 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { initGame, dealHands, determineWinner } from './utils/game'
+import { getMadeHandAndRank, handRanks } from './utils/resolve.mjs'
 import { Hand } from './components/hands.js'
 import { SelectDiscard } from './components/selectDiscard';
+
 function App() {
-    const [gameState, setGameState] = useState(initGame)
+    const [gameState, setGameState] = useState(dealHands(initGame()))
     const [currentPlayer, setCurrentPlayer] = useState(0)
-    const [winner, setWinner] = useState('')
+    const [winner, setWinner] = useState(null)
     console.log(gameState)
 
     return <>
         <button onClick={() => {
-            setGameState({ ...dealHands(gameState) })
-        }}>Deal game</button>
-        {<ul>{gameState.playerHands.map((hand, idx) => <ul className='hand'>Player {idx}<Hand hand={hand}></Hand></ul>)}</ul>}
+            setGameState({ ...dealHands(initGame()) })
+            setCurrentPlayer(0)
+            setWinner(null)
+        }}>Deal New Game</button>
+        {<ul>{gameState.playerHands.map(
+            (hand, idx) => <ul className='hand'>Player {idx}
+                <Hand
+                    idx={idx}
+                    hand={hand}
+                    gameState={gameState}
+                    setGameState={setGameState}
+                    currentPlayer={currentPlayer}
+                    setCurrentPlayer={setCurrentPlayer}>
+                </Hand></ul>)}</ul>}
 
-        {currentPlayer !== null ? <div className='currentHand'>
+        {/* {currentPlayer !== null ? <div className='currentHand'>
             Current Player
             <SelectDiscard
                 hand={gameState.playerHands[currentPlayer]}
@@ -23,9 +36,13 @@ function App() {
                 setGameState={setGameState}
                 currentPlayer={currentPlayer}
                 setCurrentPlayer={setCurrentPlayer} />
-        </div> : <button onClick={() => setWinner(determineWinner(gameState))}>Determine Winner</button>}
+        </div> : <button onClick={() => setWinner(determineWinner(gameState))}>Determine Winner</button>} */}
+        {!currentPlayer && <button onClick={() => setWinner(determineWinner(gameState))}>Determine Winner</button>}
 
-        {winner && <div>{winner}</div>}
+        {winner && <div>{winner.length === 1 ?
+            `Winner is player ${winner[0]} with ${handRanks[getMadeHandAndRank(gameState.playerHands[winner[0]])[0]]}` :
+            `Tie between players ${winner.join(', ')} with ${handRanks[getMadeHandAndRank(gameState.playerHands[winner[0]])[0]]}`}
+        </div>}
     </>
 }
 
