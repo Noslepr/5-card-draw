@@ -1,4 +1,3 @@
-// const suits = ['\u2660', '\u2661', '\u2662', '\u2663']
 import * as resolve from './resolve.mjs'
 export const suits = { 'A': '\u2660', 'B': '\u2661', 'C': '\u2662', 'D': '\u2663' }
 export const players = 4
@@ -44,6 +43,7 @@ export const draw = (hand, deck) => {
     return hand
 }
 
+// deal 5 card hands into state
 export const dealHands = (stateOfGame) => {
     for (let hand of stateOfGame.playerHands) {
         draw(hand, stateOfGame.deck)
@@ -51,15 +51,19 @@ export const dealHands = (stateOfGame) => {
     return stateOfGame
 }
 
+// takes in a hand and array of indexes of cards to discard, returns remaining hand
 export const discard = (hand, discardIndexes) => {
     let remainingHand = hand.filter((card, idx) => !discardIndexes.includes(idx))
     return remainingHand
 }
 
+//
 export const resolveRankBuckets = (stateOfGame) => {
+    // madeHands resolves player hands into hand rank and kicker ranks and sorts them
     let madeHands = stateOfGame.playerHands.map((hand, idx) => [resolve.getMadeHandAndRank(hand), idx])
         .sort(sortHandRanks)
 
+    // finalRankBuckets pushes player indexes into buckets where finalRankBuckets[0] is the winner or players that tie for the win
     let finalRankBuckets = [[]]
     let last = finalRankBuckets.length - 1
     madeHands.forEach((hand, idx) => idx === 0 ? finalRankBuckets[last].push(hand[1]) : isRankSame(hand[0], madeHands[idx - 1][0]) ? finalRankBuckets[last].push(hand[1]) : finalRankBuckets.push([hand[1]]))
@@ -67,9 +71,9 @@ export const resolveRankBuckets = (stateOfGame) => {
     return finalRankBuckets
 }
 
+// returns winner or winners
 export const determineWinner = (stateOfGame) => {
     let finalRankBuckets = resolveRankBuckets(stateOfGame)
-    // let winningHand =
 
     return finalRankBuckets[0]
 }
