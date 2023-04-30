@@ -1,4 +1,4 @@
-import * as resolve from './resolve.mjs'
+import * as resolve from './resolve.js'
 export const suits = { 'A': '\u2660', 'B': '\u2661', 'C': '\u2662', 'D': '\u2663' }
 export const players = 4
 const handSize = 5
@@ -57,7 +57,7 @@ export const discard = (hand, discardIndexes) => {
     return remainingHand
 }
 
-//
+//  checks hand ranks and places player indexes into rank buckets
 export const resolveRankBuckets = (stateOfGame) => {
     // madeHands resolves player hands into hand rank and kicker ranks and sorts them
     let madeHands = stateOfGame.playerHands.map((hand, idx) => [resolve.getMadeHandAndRank(hand), idx])
@@ -77,10 +77,13 @@ export const determineWinner = (stateOfGame) => {
 
     return finalRankBuckets[0]
 }
+
+// checks if hand rank is the same, including kickers
 const isRankSame = (rank1, rank2) => {
     return rank1.every((ele, idx) => ele === rank2[idx])
 }
 
+// sorts hand ranks
 const sortHandRanks = ((hand1, hand2) => {
     let i = 0
     while (hand1[0][i] === hand2[0][i] && i < hand1[0].length) {

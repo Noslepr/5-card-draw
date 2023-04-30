@@ -25,12 +25,16 @@ const isStraight = (hand) => {
     return copy.every((card, idx) => idx === 0 || (card.rank + 1 === copy[idx - 1].rank))
 }
 
-const getHighCard = (straight) => {
-    let copy = straight.slice().sort((a, b) => b.rank - a.rank)
+// returns high card of hand
+const getHighCard = (hand) => {
+    let copy = hand.slice().sort((a, b) => b.rank - a.rank)
     return copy[0].rank
 }
 
-export const groupMatches = (hand) => {
+// groups cards of same rank
+// returns the groups sorted by number of cards of a rank then by the rank itself
+// ex: [ 10c, 8s, 2d, 10h, 8h] would return [[10c, 10h], [8s, 8h], [2d]]
+const groupMatches = (hand) => {
     let matches = {}
     for (let card of hand) {
         matches[card.rank] ? matches[card.rank].push(card) : matches[card.rank] = [card]
@@ -41,6 +45,8 @@ export const groupMatches = (hand) => {
     })
 }
 
+// checks if groupMatches follows input pattern
+// returns rank of each group if pattern is matched
 const getMatchesPattern = (hand, pattern) => {
     let matches = groupMatches(hand)
     if (!(matches.every((match, idx) => match.length === pattern[idx]))) {
@@ -49,6 +55,7 @@ const getMatchesPattern = (hand, pattern) => {
     return matches.map((match) => match[0].rank)
 }
 
+// evaluation functions for every hand
 const evalFunctions = {
     'Royal Flush': (hand) => isStraight(hand) && isFlush(hand) && getHighCard(hand) === 14 ? [] : false,
     'Straight Flush': (hand) => isStraight(hand) && isFlush(hand) ? [getHighCard(hand)] : false,
@@ -62,6 +69,8 @@ const evalFunctions = {
     'High Card': (hand) => getMatchesPattern(hand, [1, 1, 1, 1, 1]),
 }
 
+// checks for every made hand starting with best possible made hand (Royal Flush)
+// returns rank of made hand and rank tiebreakers
 export const getMadeHandAndRank = (hand) => {
     for (let i = handRanks.length - 1; i >= 0; i--) {
         let handName = handRanks[i]

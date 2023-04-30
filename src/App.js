@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { initGame, dealHands, determineWinner } from './utils/game'
-import { getMadeHandAndRank, handRanks } from './utils/resolve.mjs'
+import { getMadeHandAndRank, handRanks } from './utils/resolve.js'
 import { Hand } from './components/hands.js'
 import './App.css';
 
@@ -23,7 +23,7 @@ function App() {
             </div>}
         </div>
         {<ul>{gameState.playerHands.map(
-            (hand, idx) => <ul className='hand'>Player {idx}
+            (hand, idx) => <ul key={idx}className='hand'>Player {idx}
                 <Hand
                     idx={idx}
                     hand={hand}

@@ -1,7 +1,8 @@
-import * as refactor from './refactor.mjs'
+import * as game from './game.js'
+import * as resolve from './resolve.js'
 
 const createCard = (rank, suit) => {
-    let hex = refactor.rankToHex(rank)
+    let hex = game.rankToHex(rank)
     return {suit: refactor.suits[suit], rank, display: String.fromCodePoint(parseInt(`1F0${suit}` + hex, 16))}
 
 }
@@ -20,7 +21,7 @@ function evaluate() {
     [ 'High Card', [ 1, 14, 12, 11, 10, 4 ] ]]
     let allCases = Object.values(testCases)
     for (let i = 0; i < allCases.length; i++) {
-        let result = getMadeHandAndRank(allCases[i])
+        let result = resolve.getMadeHandAndRank(allCases[i])
         console.log(result)
         console.log(JSON.stringify(result) === JSON.stringify(expectations[i]))
     }
@@ -52,9 +53,9 @@ const expectedResultsWinnerTestCases = [
 ]
 const evaluateWinners = (tests, expectedResults) => {
     for (let i = 0; i < tests.length; i++) {
-        let results = refactor.resolveRankBuckets({playerHands: tests[i]})
+        let results = game.resolveRankBuckets({playerHands: tests[i]})
         console.log(results, JSON.stringify(results) === JSON.stringify(expectedResults[i]))
-        console.log(refactor.determineWinner(results))
+        console.log(game.determineWinner(results))
     }
 }
 evaluateWinners(determineWinnerTestCases, expectedResultsWinnerTestCases)
