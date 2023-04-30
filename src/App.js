@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import { useState } from 'react';
 import { initGame, dealHands, determineWinner } from './utils/game'
 import { getMadeHandAndRank, handRanks } from './utils/resolve.mjs'
 import { Hand } from './components/hands.js'
-import { SelectDiscard } from './components/selectDiscard';
+import './App.css';
 
 function App() {
     const [gameState, setGameState] = useState(dealHands(initGame()))
@@ -28,15 +27,6 @@ function App() {
                     setCurrentPlayer={setCurrentPlayer}>
                 </Hand></ul>)}</ul>}
 
-        {/* {currentPlayer !== null ? <div className='currentHand'>
-            Current Player
-            <SelectDiscard
-                hand={gameState.playerHands[currentPlayer]}
-                gameState={gameState}
-                setGameState={setGameState}
-                currentPlayer={currentPlayer}
-                setCurrentPlayer={setCurrentPlayer} />
-        </div> : <button onClick={() => setWinner(determineWinner(gameState))}>Determine Winner</button>} */}
         {!currentPlayer && <button onClick={() => setWinner(determineWinner(gameState))}>Determine Winner</button>}
 
         {winner && <div>{winner.length === 1 ?

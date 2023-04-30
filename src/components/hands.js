@@ -1,7 +1,6 @@
-import './hand.css'
 import { useEffect, useState } from "react"
 import {discard, players, draw} from '../utils/game.js'
-// import { groupMatches } from '../utils/resolve.mjs'
+import './hand.css'
 
 export function Hand({ idx, hand, gameState, setGameState, currentPlayer, setCurrentPlayer }) {
     const [discardsIndexes, setDiscardsIndexes] = useState([])
@@ -42,7 +41,7 @@ export function Hand({ idx, hand, gameState, setGameState, currentPlayer, setCur
 
     return <>
         {currentPlayer === idx ? <>
-            {hand.map((card, idx) => <li onClick={e => toggleDiscard(idx)} className={classCombiner('card', isRed(card.suit) && 'red', discardsIndexes.includes(idx) && 'selected')}>{card.display}</li>)}
+            {hand.map((card, idx) => <li onClick={e => toggleDiscard(idx)} className={classCombiner('card clickable', isRed(card.suit) && 'red', discardsIndexes.includes(idx) && 'selected')}>{card.display}</li>)}
             <button onClick={submitDiscard}>Discard and Draw</button>
         </> : hand.map(card => <li className={isRed(card.suit) ? 'red card' : 'card' }>{card.display}</li>)}
     </>

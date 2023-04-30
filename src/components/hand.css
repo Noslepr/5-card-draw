@@ -4,9 +4,13 @@
     /* font-weight: 300; */
 }
 
-.selected {
-    border: 3px solid yellow;
+.clickable {
+    cursor: pointer;
+}
 
+.selected {
+    /* border: 3px solid yellow; */
+    opacity: .5;
 }
 
 .red {
