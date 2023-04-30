@@ -1,5 +1,5 @@
 
-const handRanks = [
+export const handRanks = [
     'High Card',
     'One Pair',
     'Two Pair',
@@ -21,30 +21,28 @@ const isFlush = (hand) => {
 }
 
 const isStraight = (hand) => {
-    hand.sort((a, b) => b.rank - a.rank)
-
-    return hand.every((card, idx) => idx === 0 || (card.rank + 1 === hand[idx - 1].rank))
+    let copy = hand.slice().sort((a, b) => b.rank - a.rank)
+    return copy.every((card, idx) => idx === 0 || (card.rank + 1 === copy[idx - 1].rank))
 }
 
 const getHighCard = (straight) => {
-    straight.sort((a, b) => b - a)
-    return straight[0].rank
+    let copy = straight.slice().sort((a, b) => b.rank - a.rank)
+    return copy[0].rank
 }
 
-const groupMatches = (hand) => {
+export const groupMatches = (hand) => {
     let matches = {}
     for (let card of hand) {
         matches[card.rank] ? matches[card.rank].push(card) : matches[card.rank] = [card]
     }
-    return Object.values(matches)
+    return Object.values(matches).sort((a, b) => {
+        if (b.length === a.length) return b[0].rank - a[0].rank
+        else return b.length - a.length
+    })
 }
 
 const getMatchesPattern = (hand, pattern) => {
     let matches = groupMatches(hand)
-    matches.sort((a, b) => {
-        if (b.length === a.length) return b[0].rank - a[0].rank
-        else return b.length - a.length
-    })
     if (!(matches.every((match, idx) => match.length === pattern[idx]))) {
         return false
     }
