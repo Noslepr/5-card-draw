@@ -1,12 +1,15 @@
 .card {
     font-size: 150px;
     line-height: 150px;
-    /* font-weight: 300; */
+    padding: 5px;
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 .selected {
-    border: 3px solid yellow;
-
+    opacity: .3;
 }
 
 .red {

@@ -1,13 +1,11 @@
-import './hand.css'
 import { useEffect, useState } from "react"
-import {discard, players, draw} from '../utils/game.js'
-// import { groupMatches } from '../utils/resolve.mjs'
+import { discard, players, draw } from '../utils/game.js'
+import './hand.css'
 
 export function Hand({ idx, hand, gameState, setGameState, currentPlayer, setCurrentPlayer }) {
     const [discardsIndexes, setDiscardsIndexes] = useState([])
 
     function toggleDiscard(idx) {
-        console.log(idx)
         if (discardsIndexes.includes(idx)) {
             discardsIndexes.splice(discardsIndexes.indexOf(idx), 1)
             setDiscardsIndexes([...discardsIndexes])
@@ -36,14 +34,10 @@ export function Hand({ idx, hand, gameState, setGameState, currentPlayer, setCur
         return classes.filter(str => typeof str === 'string').join(' ')
     }
 
-    useEffect(() => {
-        console.log(gameState.deck)
-    }, [discardsIndexes])
-
     return <>
         {currentPlayer === idx ? <>
-            {hand.map((card, idx) => <li onClick={e => toggleDiscard(idx)} className={classCombiner('card', isRed(card.suit) && 'red', discardsIndexes.includes(idx) && 'selected')}>{card.display}</li>)}
+            {hand.map((card, idx) => <li onClick={e => toggleDiscard(idx)} className={classCombiner('card clickable', isRed(card.suit) && 'red', discardsIndexes.includes(idx) && 'selected')}>{card.display}</li>)}
             <button onClick={submitDiscard}>Discard and Draw</button>
-        </> : hand.map(card => <li className={isRed(card.suit) ? 'red card' : 'card' }>{card.display}</li>)}
+        </> : hand.map(card => <li className={isRed(card.suit) ? 'red card' : 'card'}>{card.display}</li>)}
     </>
 }
