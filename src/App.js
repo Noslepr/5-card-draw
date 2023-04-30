@@ -12,7 +12,7 @@ function App() {
     return <>
         <div id='header'>
             <button onClick={() => {
-                setGameState({ ...dealHands(initGame()) })
+                setGameState(dealHands(initGame()))
                 setCurrentPlayer(0)
                 setWinner(null)
             }}>Deal New Game</button>

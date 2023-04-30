@@ -5,7 +5,7 @@ const handSize = 5
 
 // initialize game with a full deck and number of players
 export const initGame = () => {
-    let deck = []
+    const deck = []
     for (let suit in suits) {
         for (let rank = 2; rank <= 14; rank++) {
             let hex = rankToHex(rank)
@@ -23,7 +23,7 @@ export const initGame = () => {
 // rankToHex() used to determine the hex value of each card rank for unicode conversion,
 // but had to account for the French deck Knight card aswell as changing 14 rank Ace to unicode 1
 export const rankToHex = rank => {
-    let hex = rank === 14 ? 1 : rank >= 12 ? (rank + 1).toString(16) : rank.toString(16)
+    const hex = rank === 14 ? 1 : rank >= 12 ? (rank + 1).toString(16) : rank.toString(16)
     return hex
 }
 
@@ -34,8 +34,8 @@ export const draw = (hand, deck) => {
 
     while (cardsToDraw > 0) {
         // draw card from deck with randomized index and remove from deck
-        let newCardIdx = Math.floor(Math.random() * deck.length)
-        // console.log(deck.splice(newCardIdx, 1))
+        const newCardIdx = Math.floor(Math.random() * deck.length)
+
         hand.push(deck.splice(newCardIdx, 1)[0])
 
         cardsToDraw--
@@ -53,19 +53,19 @@ export const dealHands = (stateOfGame) => {
 
 // takes in a hand and array of indexes of cards to discard, returns remaining hand
 export const discard = (hand, discardIndexes) => {
-    let remainingHand = hand.filter((card, idx) => !discardIndexes.includes(idx))
+    const remainingHand = hand.filter((card, idx) => !discardIndexes.includes(idx))
     return remainingHand
 }
 
 //  checks hand ranks and places player indexes into rank buckets
 export const resolveRankBuckets = (stateOfGame) => {
     // madeHands resolves player hands into hand rank and kicker ranks and sorts them
-    let madeHands = stateOfGame.playerHands.map((hand, idx) => [resolve.getMadeHandAndRank(hand), idx])
+    const madeHands = stateOfGame.playerHands.map((hand, idx) => [resolve.getMadeHandAndRank(hand), idx])
         .sort(sortHandRanks)
 
     // finalRankBuckets pushes player indexes into buckets where finalRankBuckets[0] is the winner or players that tie for the win
-    let finalRankBuckets = [[]]
-    let last = finalRankBuckets.length - 1
+    const finalRankBuckets = [[]]
+    const last = finalRankBuckets.length - 1
     madeHands.forEach((hand, idx) => idx === 0 ? finalRankBuckets[last].push(hand[1]) : isRankSame(hand[0], madeHands[idx - 1][0]) ? finalRankBuckets[last].push(hand[1]) : finalRankBuckets.push([hand[1]]))
 
     return finalRankBuckets
@@ -73,7 +73,7 @@ export const resolveRankBuckets = (stateOfGame) => {
 
 // returns winner or winners
 export const determineWinner = (stateOfGame) => {
-    let finalRankBuckets = resolveRankBuckets(stateOfGame)
+    const finalRankBuckets = resolveRankBuckets(stateOfGame)
 
     return finalRankBuckets[0]
 }

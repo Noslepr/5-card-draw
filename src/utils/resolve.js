@@ -13,7 +13,7 @@ export const handRanks = [
 ]
 
 const isFlush = (hand) => {
-    let suit = hand[0].suit
+    const suit = hand[0].suit
     if (hand.every(card => card.suit === suit)) {
         hand.sort((a, b) => b.rank - a.rank)
         return [hand[0].rank]
@@ -21,13 +21,13 @@ const isFlush = (hand) => {
 }
 
 const isStraight = (hand) => {
-    let copy = hand.slice().sort((a, b) => b.rank - a.rank)
+    const copy = hand.slice().sort((a, b) => b.rank - a.rank)
     return copy.every((card, idx) => idx === 0 || (card.rank + 1 === copy[idx - 1].rank))
 }
 
 // returns high card of hand
 const getHighCard = (hand) => {
-    let copy = hand.slice().sort((a, b) => b.rank - a.rank)
+    const copy = hand.slice().sort((a, b) => b.rank - a.rank)
     return copy[0].rank
 }
 
@@ -35,7 +35,7 @@ const getHighCard = (hand) => {
 // returns the groups sorted by number of cards of a rank then by the rank itself
 // ex: [ 10c, 8s, 2d, 10h, 8h] would return [[10c, 10h], [8s, 8h], [2d]]
 const groupMatches = (hand) => {
-    let matches = {}
+    const matches = {}
     for (let card of hand) {
         matches[card.rank] ? matches[card.rank].push(card) : matches[card.rank] = [card]
     }
@@ -48,7 +48,7 @@ const groupMatches = (hand) => {
 // checks if groupMatches follows input pattern
 // returns rank of each group if pattern is matched
 const getMatchesPattern = (hand, pattern) => {
-    let matches = groupMatches(hand)
+    const matches = groupMatches(hand)
     if (!(matches.every((match, idx) => match.length === pattern[idx]))) {
         return false
     }
@@ -73,8 +73,8 @@ const evalFunctions = {
 // returns rank of made hand and rank tiebreakers
 export const getMadeHandAndRank = (hand) => {
     for (let i = handRanks.length - 1; i >= 0; i--) {
-        let handName = handRanks[i]
-        let result = evalFunctions[handName](hand)
+        const handName = handRanks[i]
+        const result = evalFunctions[handName](hand)
         if (result) {
             return [i, ...result]
         }

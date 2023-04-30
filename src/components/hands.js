@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { discard, players, draw } from '../utils/game.js'
 import './hand.css'
 
@@ -26,18 +26,19 @@ export function Hand({ idx, hand, gameState, setGameState, currentPlayer, setCur
         setDiscardsIndexes([])
     }
 
-    function isRed(suit) {
-        return suit === '\u2661' || suit === '\u2662'
-    }
-
-    function classCombiner(...classes) {
-        return classes.filter(str => typeof str === 'string').join(' ')
-    }
 
     return <>
         {currentPlayer === idx ? <>
             {hand.map((card, idx) => <li key={card.rank + card.suit} onClick={e => toggleDiscard(idx)} className={classCombiner('card clickable', isRed(card.suit) && 'red', discardsIndexes.includes(idx) && 'selected')}>{card.display}</li>)}
             <button onClick={submitDiscard}>Discard and Draw</button>
-        </> : hand.map(card => <li key={card.rank + card.suit} className={isRed(card.suit) ? 'red card' : 'card'}>{card.display}</li>)}
+        </> : hand.map(card => <li key={card.rank + card.suit} className={classCombiner('card', isRed(card.suit) && 'red')}>{card.display}</li>)}
     </>
+}
+
+function isRed(suit) {
+    return suit === '\u2661' || suit === '\u2662'
+}
+
+function classCombiner(...classes) {
+    return classes.filter(str => typeof str === 'string').join(' ')
 }
