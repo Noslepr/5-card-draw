@@ -9,6 +9,11 @@ function App() {
     const [currentPlayer, setCurrentPlayer] = useState(0)
     const [winner, setWinner] = useState(null)
 
+    function getHandName(hand) {
+        const name = getMadeHandAndRank(hand)
+        return name[name.length - 1]
+    }
+
     return <>
         <div id='header'>
             <button onClick={() => {
@@ -30,8 +35,11 @@ function App() {
                     gameState={gameState}
                     setGameState={setGameState}
                     currentPlayer={currentPlayer}
-                    setCurrentPlayer={setCurrentPlayer}>
-                </Hand></ul>)}</ul>}
+                    setCurrentPlayer={setCurrentPlayer}
+                    winner={winner}
+                    >
+                </Hand>
+                {winner && <div>{getHandName(hand)}</div>}</ul>)}</ul>}
 
         {currentPlayer === null && <button id='determineWinner' onClick={() => setWinner(determineWinner(gameState))}>Determine Winner</button>}
 

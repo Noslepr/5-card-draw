@@ -30,6 +30,15 @@ export const rankToHex = rank => {
 
 // takes in a hand and draws up to max hand size
 export const draw = (hand, deck) => {
+    if (hand.length === handSize) {
+        const newHand = hand.map((card => {
+            if (!card) {
+                const newCardIdx = Math.floor(Math.random() * deck.length)
+                return deck.splice(newCardIdx, 1)[0]
+            } else return card
+        }))
+        return newHand
+    }
     let cardsToDraw = handSize - hand.length
 
     while (cardsToDraw > 0) {
@@ -43,6 +52,12 @@ export const draw = (hand, deck) => {
     return hand
 }
 
+// AI discard
+export const aiDiscard = (hand, deck) => {
+    const discardedHand = hand.map(card => card.rank > 8 ? card : null)
+    return draw(discardedHand, deck)
+}
+
 // deal 5 card hands into state
 export const dealHands = (stateOfGame) => {
     for (let hand of stateOfGame.playerHands) {
@@ -53,8 +68,9 @@ export const dealHands = (stateOfGame) => {
 
 // takes in a hand and array of indexes of cards to discard, returns remaining hand
 export const discard = (hand, discardIndexes) => {
-    const remainingHand = hand.filter((card, idx) => !discardIndexes.includes(idx))
-    return remainingHand
+    // const remainingHand = hand.filter((card, idx) => !discardIndexes.includes(idx))
+    return hand.map((card, idx) => discardIndexes.includes(idx) ? null : card)
+    // return remainingHand
 }
 
 //  checks hand ranks and places player indexes into rank buckets
