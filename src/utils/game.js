@@ -27,17 +27,15 @@ export const rankToHex = rank => {
     return hex
 }
 
+const deckSplice = (deck) => {
+    const idx = Math.floor(Math.random() * deck.length)
+    return deck.splice(idx, 1)[0]
+}
 
 // takes in a hand and draws up to max hand size
 export const draw = (hand, deck) => {
     if (hand.length === handSize) {
-        const newHand = hand.map((card => {
-            if (!card) {
-                const newCardIdx = Math.floor(Math.random() * deck.length)
-                return deck.splice(newCardIdx, 1)[0]
-            } else return card
-        }))
-        return newHand
+        return hand.map(card =>  card ? card : deckSplice(deck))
     }
     let cardsToDraw = handSize - hand.length
 
