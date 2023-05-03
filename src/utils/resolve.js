@@ -76,7 +76,7 @@ export const getMadeHandAndRank = (hand) => {
         const handName = handRanks[i]
         const result = evalFunctions[handName](hand)
         if (result) {
-            return [i, ...result]
+            return [i, ...result, handName]
         }
     }
 }
