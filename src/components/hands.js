@@ -35,7 +35,7 @@ export function Hand({ idx, hand, gameState, setGameState, currentPlayer, setCur
                 className={classCombiner('card clickable', isRed(card.suit) && 'red', discardsIndexes.includes(idx) && 'selected')}>
                 {card.display}
             </li>)}
-            {idx === currentPlayer ? <button onClick={submitDiscard}>Discard and Draw</button> : <></> }
+            {idx === currentPlayer && <button onClick={submitDiscard}>Discard and Draw</button>}
         </>
             : hand.map(card => <>
                 <li key={card.rank + card.suit} className={classCombiner('card')}>{String.fromCodePoint(parseInt('1F0A0', 16))}</li>
